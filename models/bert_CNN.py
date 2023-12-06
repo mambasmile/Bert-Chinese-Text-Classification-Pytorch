@@ -54,7 +54,7 @@ class Model(nn.Module):
         context = x[0]  # 输入的句子
         mask = x[2]  # 对padding部分进行mask，和句子一个size，padding部分用0表示，如：[1, 1, 1, 1, 0, 0]
         encoder_out, text_cls = self.bert(context, attention_mask=mask, output_all_encoded_layers=False)
-        out = encoder_out.unsqueeze(1)
+        out = encoder_out.unsqueeze(1) # [batch_size, 1, seq_len, embedding_size]
         out = torch.cat([self.conv_and_pool(out, conv) for conv in self.convs], 1)
         out = self.dropout(out)
         out = self.fc_cnn(out)
